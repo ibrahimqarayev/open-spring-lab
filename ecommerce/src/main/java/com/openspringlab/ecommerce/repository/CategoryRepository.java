@@ -6,10 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface CategoryRepository extends JpaRepository<Category,Long> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    Boolean existsByNameIgnoreCase(String name);
-
-    List<Category> findByActiveTrue();
+    boolean existsByNameIgnoreCase(String name);
 }
