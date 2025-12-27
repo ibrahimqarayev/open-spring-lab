@@ -1,6 +1,6 @@
-package com.openspringlab.ecommerce.controller;
+package com.openspringlab.ecommerce.exception;
 
-import com.openspringlab.ecommerce.product.ProductNotFoundException;
+import com.openspringlab.ecommerce.exception.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

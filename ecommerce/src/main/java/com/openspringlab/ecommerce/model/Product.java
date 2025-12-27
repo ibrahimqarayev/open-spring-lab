@@ -1,4 +1,4 @@
-package com.openspringlab.ecommerce.category;
+package com.openspringlab.ecommerce.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,23 +6,32 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "products")
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100, unique = true)
+    @Column(nullable = false, length = 200)
     private String name;
 
-    @Column(length = 500)
+    @Column(length = 2000)
     private String description;
+
+    @Column(nullable = false, precision = 19, scale = 2)
+    private BigDecimal price;
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String sku;
+
+    @Column(name = "stock_quantity", nullable = false)
+    private Integer stockQuantity;
 
     @Column(nullable = false)
     private Boolean active;
@@ -30,10 +39,7 @@ public class Category {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
-    @Column(name = "updated_at")
-    private Instant updatedAt;
-
-    public Category() {
+    public Product() {
     }
 
     @PrePersist
@@ -41,18 +47,9 @@ public class Category {
         if (active == null) {
             active = Boolean.TRUE;
         }
-        Instant now = Instant.now();
         if (createdAt == null) {
-            createdAt = now;
+            createdAt = Instant.now();
         }
-        if (updatedAt == null) {
-            updatedAt = now;
-        }
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = Instant.now();
     }
 
     public Long getId() {
@@ -79,6 +76,30 @@ public class Category {
         this.description = description;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
     public Boolean getActive() {
         return active;
     }
@@ -93,13 +114,5 @@ public class Category {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

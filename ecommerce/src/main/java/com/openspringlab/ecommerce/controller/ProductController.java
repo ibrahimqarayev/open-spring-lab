@@ -1,7 +1,7 @@
 package com.openspringlab.ecommerce.controller;
 
-import com.openspringlab.ecommerce.product.Product;
-import com.openspringlab.ecommerce.product.ProductService;
+import com.openspringlab.ecommerce.model.Product;
+import com.openspringlab.ecommerce.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,16 +1,16 @@
 package com.openspringlab.ecommerce.product;
 
-import com.openspringlab.ecommerce.category.Category;
+import com.openspringlab.ecommerce.model.Category;
+import com.openspringlab.ecommerce.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryService {
 
-    private final CategoryRepository  categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;

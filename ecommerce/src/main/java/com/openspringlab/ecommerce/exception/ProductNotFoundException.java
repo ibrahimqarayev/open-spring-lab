@@ -1,4 +1,4 @@
-package com.openspringlab.ecommerce.product;
+package com.openspringlab.ecommerce.exception;
 
 public class ProductNotFoundException extends RuntimeException {
     public ProductNotFoundException(Long id) {

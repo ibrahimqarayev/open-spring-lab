@@ -1,4 +1,7 @@
-package com.openspringlab.ecommerce.product;
+package com.openspringlab.ecommerce.service;
+import com.openspringlab.ecommerce.exception.ProductNotFoundException;
+import com.openspringlab.ecommerce.model.Product;
+import com.openspringlab.ecommerce.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 @Service
