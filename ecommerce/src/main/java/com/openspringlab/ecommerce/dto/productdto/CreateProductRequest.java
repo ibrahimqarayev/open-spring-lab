@@ -1,9 +1,17 @@
 package com.openspringlab.ecommerce.dto.productdto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateProductRequest {
 
     private String name;
@@ -18,53 +26,4 @@ public class CreateProductRequest {
 
     private Boolean active;
 
-    public String name() {
-        return name;
-    }
-
-    public String description() {
-        return description;
-    }
-
-    public BigDecimal price() {
-        return price;
-    }
-
-    public String sku() {
-        return sku;
-    }
-
-    public Integer stockQuantity() {
-        return stockQuantity;
-    }
-
-    public Boolean active() {
-        return active;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public CreateProductRequest() {}
 }

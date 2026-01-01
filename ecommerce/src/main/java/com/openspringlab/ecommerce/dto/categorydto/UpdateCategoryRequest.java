@@ -1,5 +1,14 @@
 package com.openspringlab.ecommerce.dto.categorydto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdateCategoryRequest {
 
     private String name;
@@ -8,30 +17,4 @@ public class UpdateCategoryRequest {
 
     private Boolean active;
 
-    public String name() {
-        return name;
-    }
-
-    public String description() {
-        return description;
-    }
-
-    public Boolean active() {
-        return active;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public UpdateCategoryRequest()
-    {}
 }
