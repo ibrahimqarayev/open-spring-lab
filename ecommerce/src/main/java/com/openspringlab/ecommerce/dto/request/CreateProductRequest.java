@@ -1,4 +1,4 @@
-package com.openspringlab.ecommerce.dto.productdto;
+package com.openspringlab.ecommerce.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,7 @@
 package com.openspringlab.ecommerce.service;
 
 import com.openspringlab.ecommerce.exception.CategoryAlreadyExistException;
+import com.openspringlab.ecommerce.exception.CategoryNotFoundException;
 import com.openspringlab.ecommerce.model.Category;
 import com.openspringlab.ecommerce.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +18,9 @@ public class CategoryService {
             throw new CategoryAlreadyExistException("Category already exists");
         }
         return categoryRepository.save(category);
+    }
+
+    public Category getById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category not found"));
     }
 }

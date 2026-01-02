@@ -1,4 +1,4 @@
-package com.openspringlab.ecommerce.dto.categorydto;
+package com.openspringlab.ecommerce.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +9,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCategoryRequest {
+public class UpdateCategoryRequest {
 
     private String name;
 
     private String description;
 
     private Boolean active;
+
 
 }
