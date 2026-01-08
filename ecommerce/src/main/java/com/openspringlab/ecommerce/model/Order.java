@@ -1,6 +1,5 @@
 package com.openspringlab.ecommerce.model;
 
-import com.openspringlab.ecommerce.Enums.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -31,9 +30,8 @@ public class Order {
     @Positive
     private BigDecimal TotalAmount;
 
-    @Column(nullable = false)  // ENUM for easy selection from pre-defined set of values
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Item> items = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
