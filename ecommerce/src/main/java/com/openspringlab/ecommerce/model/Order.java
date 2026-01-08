@@ -24,8 +24,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
 
-    @NotNull
-    @Column(name = "order_date", nullable = false)
+    @Column(name = "order_date", nullable = false, updatable = false)
     private LocalDateTime orderDate;
 
     @Column(nullable = false)
@@ -43,6 +42,14 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private Set<Product> products = new HashSet<>();
+
+    @PrePersist
+    public void prePersist()
+    {
+        status = OrderStatus.CREATED;
+
+        orderDate = LocalDateTime.now();
+    }
 
 }
 
