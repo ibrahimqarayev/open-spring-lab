@@ -24,7 +24,7 @@ public class Order {
     private Long id ;
 
     @NotNull
-    @Column(name = "order_date", nullable = false)
+    @Column(name = "order_date", nullable = false,updatable = false)
     private LocalDateTime orderDate;
 
     @Column(nullable = false)
@@ -42,5 +42,10 @@ public class Order {
     )
     private Set<Product> products = new HashSet<>();
 
+    @PrePersist
+    public void prePersist()
+    {
+        orderDate = LocalDateTime.now();
+    }
 }
 
