@@ -4,6 +4,7 @@ package com.openspringlab.ecommerce.service;
 import com.openspringlab.ecommerce.dto.request.CreateOrderRequest;
 import com.openspringlab.ecommerce.dto.response.OrderResponse;
 import com.openspringlab.ecommerce.exception.OrderNotFoundException;
+import com.openspringlab.ecommerce.model.Item;
 import com.openspringlab.ecommerce.model.Order;
 import com.openspringlab.ecommerce.model.Product;
 import com.openspringlab.ecommerce.repository.OrderRepository;
@@ -18,8 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -32,16 +31,9 @@ public class OrderService {
 
         Map<Long, Integer> orderInput = createOrderRequest.getOrderInput();
 
-        Set<Product> products = productRepository.findAllById(orderInput.keySet())
-                .stream()
-                .collect(Collectors.toSet());
+        Set<Product> products = productRepository.findAllById(orderInput.keySet()).stream().collect(Collectors.toSet());
 
-        BigDecimal totalAmount = products.stream()
-                .map(product ->
-                        product.getPrice()
-                                .multiply(BigDecimal.valueOf(orderInput.get(product.getId())))
-                )
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalAmount = products.stream().map(product -> product.getPrice().multiply(BigDecimal.valueOf(orderInput.get(product.getId())))).reduce(BigDecimal.ZERO, BigDecimal::add);
 
 
         Order order = new Order();
@@ -50,39 +42,26 @@ public class OrderService {
 
         order.setProducts(products);
 
+        Item item = new Item();
+        item.setOrder(order);
+
+
         orderRepository.save(order);
 
-        List<OrderResponse.ProductDetailsResponse> productDetails =
-                products.stream()
-                        .map(product -> OrderResponse.ProductDetailsResponse.builder()
-                                .productId(product.getId())
-                                .productName(product.getName())
-                                .productPrice(product.getPrice())
-                                .quantity(orderInput.get(product.getId()))
-                                .build()
+        List<OrderResponse.ProductDetailsResponse> productDetails = products.stream().map(product -> OrderResponse.ProductDetailsResponse.builder().productId(product.getId()).productName(product.getName()).productPrice(product.getPrice()).quantity(orderInput.get(product.getId())).build()
 
-                        ).toList();
+        ).toList();
 
-        return OrderResponse.builder()
-                .id(order.getId())
-                .orderDate(order.getOrderDate())
-                .totalAmount(totalAmount)
-                .productDetails(productDetails).build();
+        return OrderResponse.builder().id(order.getId()).orderDate(order.getOrderDate()).totalAmount(totalAmount).productDetails(productDetails).build();
     }
 
-    public List<OrderResponse> getAllOrders()
-    {
+    public List<OrderResponse> getAllOrders() {
         List<Order> extractOrders = orderRepository.findAll();
 
         List<OrderResponse> orderResponseList = new ArrayList<>();
 
-        for(Order order : extractOrders)
-        {
-            OrderResponse orderResponse = OrderResponse.builder().
-                    id(order.getId())
-                    .orderDate(order.getOrderDate())
-                    .totalAmount(order.getTotalAmount())
-                    .build();
+        for (Order order : extractOrders) {
+            OrderResponse orderResponse = OrderResponse.builder().id(order.getId()).orderDate(order.getOrderDate()).totalAmount(order.getTotalAmount()).build();
 
             orderResponseList.add(orderResponse);
         }
@@ -91,17 +70,10 @@ public class OrderService {
 
     }
 
-    public OrderResponse getOrderById(Long id)
-    {
-        Order order = orderRepository.findById(id).orElseThrow(
-                () -> new OrderNotFoundException("Order Not Found")
-        );
+    public OrderResponse getOrderById(Long id) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Order Not Found"));
 
-        return OrderResponse.builder().
-                id(order.getId())
-                .orderDate(order.getOrderDate())
-                .totalAmount(order.getTotalAmount())
-                .build();
+        return OrderResponse.builder().id(order.getId()).orderDate(order.getOrderDate()).totalAmount(order.getTotalAmount()).build();
 
     }
 
