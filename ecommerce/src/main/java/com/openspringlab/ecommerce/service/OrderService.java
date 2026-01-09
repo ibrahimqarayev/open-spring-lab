@@ -42,10 +42,6 @@ public class OrderService {
 
         order.setProducts(products);
 
-        Item item = new Item();
-        item.setOrder(order);
-
-
         orderRepository.save(order);
 
         List<OrderResponse.ProductDetailsResponse> productDetails = products.stream().map(product -> OrderResponse.ProductDetailsResponse.builder().productId(product.getId()).productName(product.getName()).productPrice(product.getPrice()).quantity(orderInput.get(product.getId())).build()
