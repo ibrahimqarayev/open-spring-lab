@@ -1,7 +1,5 @@
 package com.openspringlab.ecommerce.service;
 
-import com.openspringlab.ecommerce.exception.ProductNotFoundException;
-import com.openspringlab.ecommerce.model.Product;
 import com.openspringlab.ecommerce.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,11 +9,16 @@ import org.springframework.stereotype.Service;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public Product create(Product product) {
-        return productRepository.save(product);
-    }
+    //getAll - List<ProductResponse>
 
-    public Product getById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
-    }
+    //getById - ProductResponse
+
+    //getByCategoryId - List<ProductResponse>
+
+    //create - ProductResponse
+
+    //update - ProductResponse
+
+    //deleteById - void
+
 }
