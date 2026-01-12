@@ -13,4 +13,7 @@ public class UpdateProductRequest {
     private BigDecimal price;
     private String sku;
     private Integer stockQuantity;
+
+    // added categoryId
+    private Long categoryId;
 }
