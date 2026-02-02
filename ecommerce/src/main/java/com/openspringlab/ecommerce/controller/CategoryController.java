@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-//manually imported things
 import java.util.List;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -19,39 +17,34 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    //GET - categories
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> getAllCategories(){
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         List<CategoryResponse> response = categoryService.getAllCategories();
         return ResponseEntity.ok(response);
     }
 
-    //GET - categories/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id){
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
         CategoryResponse response = categoryService.getCategoryById(id);
         return ResponseEntity.ok(response);
     }
 
-    //POST - categories
     @PostMapping
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CreateCategoryRequest request){
-        CategoryResponse category = categoryService.createCategory(request);
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CreateCategoryRequest request) {
+        CategoryResponse category = categoryService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
 
-    //PUT - categories/{id}
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponse> updateCategory(
             @PathVariable Long id,
-            @RequestBody UpdateCategoryRequest request){
-        CategoryResponse category = categoryService.updateCategory(id, request);
+            @RequestBody UpdateCategoryRequest request) {
+        CategoryResponse category = categoryService.update(id, request);
         return ResponseEntity.ok(category);
     }
 
-    //DELETE - categories/{id}
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }
