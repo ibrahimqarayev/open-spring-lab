@@ -19,7 +19,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public List<CategoryResponse> getAllCategories() {
+    public List<CategoryResponse> getAll() {
         List<Category> categories = categoryRepository.findAll();
         return categories.stream().map(categoryMapper::toDto).collect(Collectors.toList());
     }
@@ -47,7 +47,7 @@ public class CategoryService {
         return categoryMapper.toDto(updated);
     }
 
-    public void deleteCategory(Long id) {
+    public void delete(Long id) {
         categoryRepository.deleteById(id);
     }
 }
