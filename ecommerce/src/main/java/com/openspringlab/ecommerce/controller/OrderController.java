@@ -16,37 +16,31 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    //GET - /orders
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getAllOrders(){
-        return ResponseEntity.ok(orderService.getAllOrders());
+    public ResponseEntity<List<OrderResponse>> getAll() {
+        return ResponseEntity.ok(orderService.getAll());
     }
 
-    //GET - /orders/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> getOrderById(@PathVariable(name = "id") Long orderId){
-        return ResponseEntity.ok(orderService.getOrderById(orderId));
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
-    //POST - /orders
     @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest createOrderRequest){
-        return ResponseEntity.ok(orderService.createOrder(createOrderRequest));
+    public ResponseEntity<OrderResponse> create(@RequestBody CreateOrderRequest createOrderRequest) {
+        return ResponseEntity.ok(orderService.create(createOrderRequest));
     }
 
-    //PUT - /orders/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<OrderResponse> updateOrderItems(@PathVariable(name = "id") Long id,
-                                                          @RequestBody UpdateOrderRequest updateOrderRequest){
-        OrderResponse orderResponse = orderService.updateOrder(id, updateOrderRequest);
+    public ResponseEntity<OrderResponse> updateOrderItems(@PathVariable Long id,
+                                                          @RequestBody UpdateOrderRequest updateOrderRequest) {
+        OrderResponse orderResponse = orderService.update(id, updateOrderRequest);
         return ResponseEntity.ok(orderResponse);
     }
 
-    //DELETE - orders/{id}
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable(name = "id") Long id){
-        orderService.deleteById(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        orderService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

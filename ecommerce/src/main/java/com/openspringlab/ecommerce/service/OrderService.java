@@ -18,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -33,24 +31,19 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderItemMapper orderItemMapper;
 
-    //getAll - List<OrderResponse>
-    public List<OrderResponse> getAllOrders() {
+    public List<OrderResponse> getAll() {
         List<Order> orders = orderRepository.findAll();
-        return orders.stream().map(orderMapper::toDto)
-                .collect(Collectors.toList());
+        return orders.stream().map(orderMapper::toDto).collect(Collectors.toList());
     }
 
-    //getById - OrderResponse
     public OrderResponse getOrderById(Long id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() ->
-                        new OrderNotFoundException("Order with id " + id + " not found"));
+                .orElseThrow(() -> new OrderNotFoundException("Order with id " + id + " not found"));
         return orderMapper.toDto(order);
     }
 
-    //create - OrderResponse
     @Transactional
-    public OrderResponse createOrder(CreateOrderRequest createOrderRequest) {
+    public OrderResponse create(CreateOrderRequest createOrderRequest) {
         // Fetch all products at once (solves N+1)
         List<Long> productIds = createOrderRequest.getItems().stream()
                 .map(CreateOrderItemRequest::getProductId)
@@ -76,9 +69,9 @@ public class OrderService {
             Product product = productMap.get(item.getProductId());
 
             // Optional: Validate stock
-             if (product.getStockQuantity() < item.getQuantity()) {
-                 throw new RuntimeException("Insufficient stock");
-             }
+            if (product.getStockQuantity() < item.getQuantity()) {
+                throw new RuntimeException("Insufficient stock");
+            }
 
             OrderItem orderItem = orderItemMapper.toEntity(item);
             orderItem.setOrder(order);
@@ -98,9 +91,8 @@ public class OrderService {
         return orderMapper.toDto(orderRepository.save(order));
     }
 
-    //update - OrderResponse
     @Transactional
-    public OrderResponse updateOrder(Long id, UpdateOrderRequest updateOrderRequest) {
+    public OrderResponse update(Long id, UpdateOrderRequest updateOrderRequest) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Order with id " + id + " not found"));
 
@@ -164,10 +156,11 @@ public class OrderService {
         return orderMapper.toDto(orderRepository.save(order));
     }
 
-    //deleteById - void
-    public void deleteById(Long id){
-        orderRepository.deleteById(id);
+    public void delete(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException(
+                        "Order with id " + id + " not found"));
+        orderRepository.delete(order);
     }
-    
 
 }
