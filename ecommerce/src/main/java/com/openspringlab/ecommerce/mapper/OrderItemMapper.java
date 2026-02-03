@@ -23,7 +23,7 @@ public interface OrderItemMapper {
     OrderItemResponse toDto(OrderItem orderItem);
 
     @Named("getProductId")
-    private Long getProductId(Product product){
+    default Long getProductId(Product product){
         return  product.getId();
     }
 
