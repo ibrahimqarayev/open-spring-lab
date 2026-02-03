@@ -3,132 +3,110 @@ package com.openspringlab.ecommerce.service;
 import com.openspringlab.ecommerce.dto.product.CreateProductRequest;
 import com.openspringlab.ecommerce.dto.product.ProductResponse;
 import com.openspringlab.ecommerce.dto.product.UpdateProductRequest;
+import com.openspringlab.ecommerce.exception.CategoryNotFoundException;
+import com.openspringlab.ecommerce.exception.ProductNotFoundException;
+import com.openspringlab.ecommerce.mapper.ProductMapper;
 import com.openspringlab.ecommerce.model.Category;
 import com.openspringlab.ecommerce.model.Product;
 import com.openspringlab.ecommerce.repository.CategoryRepository;
 import com.openspringlab.ecommerce.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductMapper productMapper;
 
-
-    private ProductResponse mapToResponses(Product product){
-        ProductResponse response = new ProductResponse();
-
-            response.setId(product.getId());
-            response.setName(product.getName());
-            response.setDescription(product.getDescription());
-            response.setPrice(product.getPrice());
-            response.setSku(product.getSku());
-            response.setStockQuantity(product.getStockQuantity());
-
-            if(product.getCategory() != null) {
-                response.setCategoryId(product.getCategory().getId());
-            }
-
-            return response;
-
-    }
-
-
-    //getAll - List<ProductResponse>
-    public List<ProductResponse> getAllProducts() {
-
-        //1. Fetch the data from the DB
+    public List<ProductResponse> getAll() {
         List<Product> products = productRepository.findAll();
-
-        //2. Create a empty list to hold our responses
-        List<ProductResponse> responses = new ArrayList<>();
-
-        //3. loop through each product
-        for(Product product: products){
-            responses.add(mapToResponses(product));
-        }
-        return responses;
+        return products.stream().map(productMapper::toDto).collect(Collectors.toList());
     }
 
-    //getById - ProductResponse
-    public ProductResponse getProductById(Long id){
-        // 1. Find the single product
+    public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
-        //return and map directly
-        return mapToResponses(product);
-
+                .orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found"));
+        return productMapper.toDto(product);
     }
 
-    //getByCategoryId - List<ProductResponse>
-    public List<ProductResponse> getProductsByCategoryId(Long categoryId){
+    public List<ProductResponse> getProductsByCategoryId(Long categoryId) {
         List<Product> products = productRepository.findByCategoryId(categoryId);
-        List<ProductResponse> responses = new ArrayList<>();
-
-        for(Product product: products){
-            responses.add(mapToResponses(product));
-        }
-        return responses;
+        return products.stream().map(productMapper::toDto).collect(Collectors.toList());
     }
 
-    //create - ProductResponse
-    public ProductResponse createProduct(CreateProductRequest request){
-        Product product = new Product();
-        product.setName(request.getName());
-        product.setDescription(request.getDescription());
-        product.setPrice(request.getPrice());
-        product.setSku(request.getSku());
-        product.setStockQuantity(request.getStockQuantity());
+    @Transactional
+    public ProductResponse create(CreateProductRequest request) {
+        validateProductRequest(request.getName(),request.getPrice(),request.getSku());
 
-        if(request.getCategoryId() != null){
-            Category category = categoryRepository.findById(request.getCategoryId())
-                    .orElseThrow(()-> new RuntimeException("Category not found"));
-            product.setCategory(category);
-        }
+        Product product = productMapper.toEntity(request);
 
-        //Save to DB
+        Optional.ofNullable(request.getCategoryId())
+                .ifPresent(categoryId -> {
+                    Category category = categoryRepository.findById(categoryId)
+                            .orElseThrow(() ->
+                                    new CategoryNotFoundException(
+                                            "Category with id " + categoryId + " not found"
+                                    )
+                            );
+                    product.setCategory(category);
+                });
+
         Product savedProduct = productRepository.save(product);
 
-        // Map and return response
-        return mapToResponses(savedProduct);
+        return productMapper.toDto(savedProduct);
     }
 
-    //update - ProductResponse
-    public ProductResponse updateProduct(Long id, UpdateProductRequest request){
+    @Transactional
+    public ProductResponse update(Long id, UpdateProductRequest request) {
 
-        //Hybrid method like getId and create method
-        //1. Like getId - find the product
         Product product = productRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException(
+                        "Product with id " + id + " not found"));
 
-        //2. like create - map from request
+        validateProductRequest(request.getName(),request.getPrice(),request.getSku());
+
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
         product.setSku(request.getSku());
         product.setStockQuantity(request.getStockQuantity());
 
-        if(request.getCategoryId() != null){
+        if (request.getCategoryId() != null) {
             Category category = categoryRepository.findById(request.getCategoryId())
-                    .orElseThrow(()-> new RuntimeException("Category not found"));
+                    .orElseThrow(() -> new CategoryNotFoundException(
+                            "Category with id " + request.getCategoryId() + " not found"));
             product.setCategory(category);
         }
 
-        //3. create a new object to append results
         Product updatedProduct = productRepository.save(product);
-        return mapToResponses(updatedProduct);
+        return productMapper.toDto(updatedProduct);
     }
 
-    //deleteById - void
-    public void deleteProduct(Long id){
-        productRepository.deleteById(id);
+    @Transactional
+    public void delete(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(
+                        "Product with id " + id + " not found"));
+        productRepository.delete(product);
     }
 
+    private void validateProductRequest(String name, BigDecimal price, String sku) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Product name is required");
+        }
+        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Product price must be non-negative");
+        }
+        if (sku == null || sku.isBlank()) {
+            throw new IllegalArgumentException("Product SKU is required");
+        }
+    }
 }
