@@ -12,23 +12,33 @@
     <artifactId>ecommerce</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ecommerce</name>
-    <description>Demo project for Spring Boot</description>
-    <url/>
+    <description>Open-source Spring Boot e-commerce project</description>
+    <url>https://github.com/ibrahimqarayev/open-spring-lab</url>
+
     <licenses>
-        <license/>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
     </licenses>
+
     <developers>
         <developer/>
     </developers>
+
     <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
+        <connection>scm:git:git://github.com/ibrahimqarayev/open-spring-lab.git</connection>
+        <developerConnection>scm:git:ssh://github.com/ibrahimqarayev/open-spring-lab.git</developerConnection>
+        <url>https://github.com/ibrahimqarayev/open-spring-lab</url>
     </scm>
+
     <properties>
         <java.version>17</java.version>
+        <lombok.version>1.18.32</lombok.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
     </properties>
+
     <dependencies>
 
         <!-- Web -->
@@ -47,10 +57,9 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-
 
         <!-- VALIDATION -->
         <dependency>
@@ -69,13 +78,13 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.5.5.Final</version>
+            <version>${mapstruct.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
-            <version>1.5.5.Final</version>
+            <version>${mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -128,14 +137,11 @@
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>1.5.5.Final</version>
+                            <version>${mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-
-
         </plugins>
     </build>
-
 </project>
