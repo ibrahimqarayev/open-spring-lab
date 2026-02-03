@@ -21,7 +21,7 @@
         ProductResponse toDto(Product product);
 
         @Named("getCategoryId")
-        private Long getCategoryId(Category category){
+        default Long getCategoryId(Category category){
             return category.getId();
         }
 

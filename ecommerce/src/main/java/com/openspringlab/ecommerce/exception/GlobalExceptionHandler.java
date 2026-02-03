@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleOrderNotFoundException(OrderNotFoundException ex) {
         Map<String, String> errors = new HashMap<>();
-        errors.put("message", "Order not found !");
+        errors.put("message", ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 
