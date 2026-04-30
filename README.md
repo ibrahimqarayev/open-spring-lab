@@ -3,8 +3,6 @@
 **OpenSpringLab** is an open-source learning community focused on  
 **learning Java & Spring Boot by building real backend projects together**.
 
-This project was founded and is maintained by an unemployed Java developer who believes that  
-**learning should never stop**.
 
 ---
 
