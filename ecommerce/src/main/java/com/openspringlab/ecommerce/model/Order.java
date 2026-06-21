@@ -1,5 +1,6 @@
 package com.openspringlab.ecommerce.model;
 
+import com.openspringlab.ecommerce.Enum.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -32,6 +33,10 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> orderItems = new HashSet<>();
+
+    private OrderStatus orderStatus;
+
+    private LocalDateTime updatedAt;
 
     @PrePersist
     public void prePersist() {

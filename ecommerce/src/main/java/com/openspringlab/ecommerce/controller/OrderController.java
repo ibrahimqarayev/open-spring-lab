@@ -4,6 +4,7 @@ import com.openspringlab.ecommerce.dto.order.CreateOrderRequest;
 import com.openspringlab.ecommerce.dto.order.OrderResponse;
 import com.openspringlab.ecommerce.dto.order.UpdateOrderRequest;
 import com.openspringlab.ecommerce.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponse> create(@RequestBody CreateOrderRequest createOrderRequest) {
+    public ResponseEntity<OrderResponse> create(@Valid
+                                                    @RequestBody CreateOrderRequest createOrderRequest) {
         return ResponseEntity.ok(orderService.create(createOrderRequest));
     }
 
