@@ -55,6 +55,29 @@ More tools (Security, Docker, etc.) will be added in later stages.
 cd ecommerce
 mvn spring-boot:run
 ```
+---
+## 📍 API Endpoints
+
+| Endpoint | Method | Description |
+|---------|--------|-------------|
+| `/categories` | GET | Retrieve a list of all categories. |
+| `/categories/{id}` | GET | Retrieve a specific category by its ID. |
+| `/categories` | POST | Create a new category. |
+| `/categories/{id}` | PUT | Update an existing category by its ID. |
+| `/categories/{id}` | DELETE | Delete a category by its ID. |
+| `/orders` | GET | Retrieve a list of all orders. |
+| `/orders/{id}` | GET | Retrieve a specific order by its ID. |
+| `/orders` | POST | Create a new order. |
+| `/orders/{id}` | PUT | Update an existing order (order items) by its ID. |
+| `/orders/{id}` | DELETE | Delete an order by its ID. |
+| `/products` | GET | Retrieve a list of all products. |
+| `/products/{id}` | GET | Retrieve a specific product by its ID. |
+| `/products?categoryId={categoryId}`| GET | Retrieve a list of products filtered by a specific category ID. |
+| `/products` | POST | Create a new product. |
+| `/products/{id}` | PUT | Update an existing product by its ID. |
+| `/products/{id}` | DELETE | Delete a product by its ID. |
+
+---
 
 ## 🗺️ Next Steps
 
