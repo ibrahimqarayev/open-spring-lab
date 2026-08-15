@@ -80,3 +80,14 @@ Each project:
 - Has its own `pom.xml`
 - Has its own `README.md`
 - Can be run independently
+
+---
+
+## 🔌 API Endpoints
+
+See [ecommerce/README.md](ecommerce/README.md) for the full API reference.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/products` | List all products |
+| GET | `/api/categories` | List all categories |
